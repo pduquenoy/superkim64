@@ -1,0 +1,82 @@
+
+; 64tass Turbo Assembler Macro V1.56.2625 listing file
+; 64tass -L relocate.lst -i -o relocate.prg relocate.asm
+; Thu Jun 23 19:14:37 2022
+
+;Offset	;Hex		;Monitor	;Source
+
+;******  Processing input file: relocate.asm
+
+=$22					SOURCE  = $22               ; first temp variable
+=$24					TOPMEM  = $24               ; highest address available to BASIC
+=$26					LASTBYT = $26               ; previous byte encountered
+=$2d					VARTAB  = $2D               ; pointer to start of BASIC variable storage area
+=$33					FRETOP  = $33               ; pointer to bottom of string text storage area
+=$37					TARGET  = $37               ; end of basic memory/start of machine code (aka MEMSIZ)
+>0801	29 08 64 00 99 20 22 11		        .BYTE $29,$08,$64,$00,$99,$20,$22,$11
+>0809	53 55 50 45 52 4d 4f 4e		        .TEXT "SUPERMON+64    JIM BUTTERFIELD"
+>0811	2b 36 34 20 20 20 20 4a 49 4d 20 42 55 54 54 45
+>0821	52 46 49 45 4c 44
+>0827	22 00 43 08 6e 00 9e 28		        .BYTE $22,$00,$43,$08,$6E,$00,$9E,$28
+>082f	c2 28 34 33 29 aa 32 35		        .BYTE $C2,$28,$34,$33,$29,$AA,$32,$35
+>0837	36 ac c2 28 34 34 29 aa		        .BYTE $36,$AC,$C2,$28,$34,$34,$29,$AA
+>083f	37 31 29 00 00 00 00 00		        .BYTE $37,$31,$29,$00,$00,$00,$00,$00
+>0847	00				        .BYTE $00
+.0848	a5 2d		lda $2d		        LDA VARTAB          ; start copying from the start of basic variables
+.084a	85 22		sta $22		        STA SOURCE
+.084c	a5 2e		lda $2e		        LDA VARTAB+1
+.084e	85 23		sta $23		        STA SOURCE+1
+.0850	a5 37		lda $37		        LDA TARGET          ; start copying to the end of BASIC memory
+.0852	85 24		sta $24		        STA TOPMEM
+.0854	a5 38		lda $38		        LDA TARGET+1
+.0856	85 25		sta $25		        STA TOPMEM+1
+.0858	a0 00		ldy #$00	LOOP    LDY #$00            ; no offset from pointers
+.085a	a5 22		lda $22		        LDA SOURCE          ; decrement two-byte source address
+.085c	d0 02		bne $0860	        BNE NB1
+.085e	c6 23		dec $23		        DEC SOURCE+1
+.0860	c6 22		dec $22		NB1     DEC SOURCE
+.0862	b1 22		lda ($22),y	        LDA (SOURCE),Y      ; get byte currently pointed to by SOURCE
+.0864	c9 36		cmp #$36	        CMP #$36            ; check for address marker ($36)
+.0866	d0 2f		bne $0897	        BNE NOADJ           ; skip address adjustment unless found
+.0868	a5 22		lda $22		        LDA SOURCE          ; decrement two-byte source address
+.086a	d0 02		bne $086e	        BNE NB2
+.086c	c6 23		dec $23		        DEC SOURCE+1
+.086e	c6 22		dec $22		NB2     DEC SOURCE
+.0870	b1 22		lda ($22),y	        LDA (SOURCE),Y      ; get byte currently pointed to by SOURCE
+.0872	c9 36		cmp #$36	        CMP #$36            ; check for second consecutive marker ($36)
+.0874	f0 30		beq $08a6	        BEQ DONE            ; if found, we're done with relocation
+.0876	85 26		sta $26		        STA LASTBYT         ; if not, save byte for later
+.0878	a5 22		lda $22		        LDA SOURCE          ; decrement two-byte source address
+.087a	d0 02		bne $087e	        BNE NB3
+.087c	c6 23		dec $23		        DEC SOURCE+1
+.087e	c6 22		dec $22		NB3     DEC SOURCE
+.0880	b1 22		lda ($22),y	        LDA (SOURCE),Y      ; current byte is low byte of relative address
+.0882	18		clc		        CLC
+.0883	65 24		adc $24		        ADC TOPMEM          ; calc absolute low byte by adding top of memory
+.0885	aa		tax		        TAX                 ; save absolute low byte in X
+.0886	a5 26		lda $26		        LDA LASTBYT         ; previous byte is high byte of relative address
+.0888	65 25		adc $25		        ADC TOPMEM+1        ; calc absolute high byte by adding top of memory
+.088a	48		pha		        PHA                 ; save absolute high byte on stack
+.088b	a5 37		lda $37		        LDA TARGET          ; decrement two-byte target address
+.088d	d0 02		bne $0891	        BNE NB4
+.088f	c6 38		dec $38		        DEC TARGET+1
+.0891	c6 37		dec $37		NB4     DEC TARGET
+.0893	68		pla		        PLA                 ; retrieve absolute high byte from stack
+.0894	91 37		sta ($37),y	        STA (TARGET),Y      ; save it to the target address
+.0896	8a		txa		        TXA                 ; retrieve absolute low byte from stack
+.0897	48		pha		NOADJ   PHA                 ; save current byte on stack
+.0898	a5 37		lda $37		        LDA TARGET          ; decrement two-byte target address
+.089a	d0 02		bne $089e	        BNE NB5
+.089c	c6 38		dec $38		        DEC TARGET+1
+.089e	c6 37		dec $37		NB5     DEC TARGET
+.08a0	68		pla		        PLA                 ; retrieve current byte from stack
+.08a1	91 37		sta ($37),y	        STA (TARGET),Y      ; save it in the target address
+.08a3	18		clc		        CLC                 ; clear carry for unconditional loop
+.08a4	90 b2		bcc $0858	        BCC LOOP            ; rinse, repeat
+.08a6	a5 37		lda $37		DONE    LDA TARGET          ; fix pointer to string storage
+.08a8	85 33		sta $33		        STA FRETOP
+.08aa	a5 38		lda $38		        LDA TARGET+1
+.08ac	85 34		sta $34		        STA FRETOP+1
+.08ae	6c 37 00	jmp ($0037)	        JMP (TARGET)        ; jump to the beginning of the relocated code
+
+;******  End of listing
