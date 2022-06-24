@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.56.2625 listing file
 ; 64tass -L 8000 -i -o supermon64-8000.prg "-DORG=\$8000" supermon64.asm
-; Fri Jun 24 16:08:54 2022
+; Fri Jun 24 16:31:20 2022
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -20,7 +20,7 @@
 =$bb					FNADR   = $BB               ; pointer to current filename
 =$c6					NDX     = $C6               ; number of characters in keyboard buffer
 =$0277					KEYD    = $0277             ; keyboard buffer
-=$03b0					BKVEC   = $03B0;$17FE             ; BRK instruction vector (official name CBINV)
+=$0316					BKVEC   = $0316             ; BRK instruction vector (official name CBINV)
 >0100					ACMD    .FILL 1             ; addressing command
 >0101					LENGTH  .FILL 1             ; length of operand
 >0102					MNEMW   .FILL 3             ; 3 letter mnemonic buffer
@@ -81,9 +81,9 @@
 .8018	20 48 88	jsr $8848	        JSR NMPRNT          ; print entry point address
 .801b	20 dd 86	jsr $86dd	        JSR CRLF
 .801e	ad e3 8a	lda $8ae3	        LDA LINKAD          ; set BRK vector
-.8021	8d b0 03	sta $03b0	        STA BKVEC
+.8021	8d 16 03	sta $0316	        STA BKVEC
 .8024	ad e4 8a	lda $8ae4	        LDA LINKAD+1
-.8027	8d b1 03	sta $03b1	        STA BKVEC+1
+.8027	8d 17 03	sta $0317	        STA BKVEC+1
 .802a	a9 80		lda #$80	        LDA #$80            ; disable kernel control messages
 .802c	ea		nop		        NOP
 .802d	ea		nop		        NOP
