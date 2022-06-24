@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.56.2625 listing file
 ; 64tass -L 8000 -i -o supermon64-8000.prg "-DORG=\$8000" supermon64.asm
-; Fri Jun 24 17:32:17 2022
+; Fri Jun 24 17:52:02 2022
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -434,8 +434,11 @@
 .832f	a0 00		ldy #$00	        LDY #0              ; no offset
 .8331	a5 c1		lda $c1		FILLP   LDA TMP0            ; load value to fill in accumulator
 .8333	91 c3		sta ($c3),y	        STA (TMP2),Y        ; store fill value in current address
-.8335	20 e1 ff	jsr $ffe1	        JSR STOP            ; check for stop key
-.8338	f0 08		beq $8342	        BEQ FSTART          ; if pressed, back to main loop
+.8335	ea		nop		        NOP
+.8336	ea		nop		        NOP
+.8337	ea		nop		        NOP
+.8338	ea		nop		        NOP
+.8339	ea		nop		        NOP
 .833a	20 76 87	jsr $8776	        JSR ADDA2           ; increment address
 .833d	20 64 87	jsr $8764	        JSR SUB13           ; decrement length
 .8340	b0 ef		bcs $8331	        BCS FILLP           ; keep going until length reaches 0

@@ -537,8 +537,13 @@ FILL    JSR GETDIF          ; start in TMP2, end in STASH, length in STORE
         LDY #0              ; no offset
 FILLP   LDA TMP0            ; load value to fill in accumulator
         STA (TMP2),Y        ; store fill value in current address
-        JSR STOP            ; check for stop key
-        BEQ FSTART          ; if pressed, back to main loop
+        NOP
+        NOP
+        NOP
+        ;JSR STOP            ; check for stop key
+        NOP
+        NOP
+        ;BEQ FSTART          ; if pressed, back to main loop
         JSR ADDA2           ; increment address
         JSR SUB13           ; decrement length
         BCS FILLP           ; keep going until length reaches 0
