@@ -133,14 +133,22 @@ SUPER   LDY #MSG4-MSGBAS    ; display "..SYS "
 ; -----------------------------------------------------------------------------
 ; BRK handler
 BREAK   LDX #$05            ; pull registers off the stack
-BSTACK  PLA                 ; order: Y,X,A,SR,PCL,PCH
-        STA PCH,X           ; store in memory
-        DEX 
+BSTACK  LDA $FE,X
+        STA PCH,X
+        DEX
         BPL BSTACK
-        CLD                 ; disable bcd mode
-        TSX                 ; store stack pointer in memory 
+        CLD
+        TSX
         STX SP
-        CLI                 ; enable interupts
+        CLI
+        ;PLA                 ; order: Y,X,A,SR,PCL,PCH
+        ;STA PCH,X           ; store in memory
+        ;DEX 
+        ;BPL BSTACK
+        ;CLD                 ; disable bcd mode
+        ;TSX                 ; store stack pointer in memory 
+        ;STX SP
+        ;CLI                 ; enable interupts
 
 ; -----------------------------------------------------------------------------
 ; display registers [R]
