@@ -25,14 +25,14 @@ TMP2    = $C3               ; usually holds start address
 
 ; -----------------------------------------------------------------------------
 ; kernal variables
-SATUS   = $F1               ; kernal i/o status word
+SATUS   = $90               ; kernal i/o status word
 FNLEN   = $B7               ; length of current filename
 SADD    = $B9               ; current secondary address (official name SA)
 FA      = $BA               ; current device number
 FNADR   = $BB               ; pointer to current filename
 NDX     = $C6               ; number of characters in keyboard buffer
 KEYD    = $0277             ; keyboard buffer
-BKVEC   = $17FE             ; BRK instruction vector (official name CBINV)
+BKVEC   = $03B0;$17FE             ; BRK instruction vector (official name CBINV)
 
         *= $0100            ; store variables in tape error buffer
 
