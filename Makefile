@@ -1,4 +1,4 @@
-all: supermon64.prg kimmon9000.ptp
+all: supermon64.prg
 
 supermon64.prg: relocate.prg supermon64-8000.prg supermon64-C000.prg
 	./build.py $^ $@
@@ -11,9 +11,6 @@ supermon64-C000.prg: supermon64.asm
 
 relocate.prg: relocate.asm
 	64tass -L relocate.lst -i $< -o $@
-
-kimmon9000.ptp: supermon64.prg
-	srec_cat supermon64.prg -binary -offset 0x9000 -o kimmon9000.ptp -MOS_Technologies
 
 clean:
 	rm -f relocate.prg

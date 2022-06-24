@@ -25,7 +25,7 @@ TMP2    = $C3               ; usually holds start address
 
 ; -----------------------------------------------------------------------------
 ; kernal variables
-SATUS   = $90               ; kernal i/o status word
+SATUS   = $F1               ; kernal i/o status word
 FNLEN   = $B7               ; length of current filename
 SADD    = $B9               ; current secondary address (official name SA)
 FA      = $BA               ; current device number
