@@ -384,8 +384,13 @@ TDOWN   LDA STASH,X         ; TMP2 = source end (STASH)
         STA UPFLG
 COMPAR1 JSR CRLF            ; new line
         LDY #0              ; no offset from pointer
-TCLOOP  JSR STOP            ; check for stop key
-        BEQ TEXIT           ; exit if pressed
+TCLOOP  NOP
+        NOP
+        NOP
+        ;JSR STOP            ; check for stop key
+        NOP
+        NOP
+        ;BEQ TEXIT           ; exit if pressed
         LDA (TMP2),Y        ; load byte from source
         BIT SAVY            ; transfer or compare?
         BPL COMPAR2         ; skip store if comparing
@@ -444,8 +449,13 @@ HLP3    LDA (TMP2),Y        ; get first byte in haystack
         CPY SAVY            ; have we reached the end of the needle?
         BNE HLP3            ; if not, keep comparing bytes
         JSR SHOWAD          ; match found, show address
-HNOFT   JSR STOP            ; no match, check for stop key
-        BEQ HEXIT           ; exit prematurely if pressed
+HNOFT   NOP
+        NOP
+        NOP
+        ;JSR STOP            ; no match, check for stop key
+        NOP
+        NOP
+        ;BEQ HEXIT           ; exit prematurely if pressed
         JSR ADDA2           ; increment haystack pointer
         JSR SUB13           ; decrement haystack length
         BCS HSCAN           ; still more haystack? keep searching

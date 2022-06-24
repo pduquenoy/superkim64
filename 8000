@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.56.2625 listing file
 ; 64tass -L 8000 -i -o supermon64-8000.prg "-DORG=\$8000" supermon64.asm
-; Fri Jun 24 17:52:02 2022
+; Fri Jun 24 18:10:49 2022
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -290,8 +290,11 @@
 .81e0	8d 07 01	sta $0107	        STA UPFLG
 .81e3	20 de 86	jsr $86de	COMPAR1 JSR CRLF            ; new line
 .81e6	a0 00		ldy #$00	        LDY #0              ; no offset from pointer
-.81e8	20 e1 ff	jsr $ffe1	TCLOOP  JSR STOP            ; check for stop key
-.81eb	f0 31		beq $821e	        BEQ TEXIT           ; exit if pressed
+.81e8	ea		nop		TCLOOP  NOP
+.81e9	ea		nop		        NOP
+.81ea	ea		nop		        NOP
+.81eb	ea		nop		        NOP
+.81ec	ea		nop		        NOP
 .81ed	b1 c3		lda ($c3),y	        LDA (TMP2),Y        ; load byte from source
 .81ef	2c 32 02	bit $0232	        BIT SAVY            ; transfer or compare?
 .81f2	10 02		bpl $81f6	        BPL COMPAR2         ; skip store if comparing
@@ -347,8 +350,11 @@
 .8267	cc 32 02	cpy $0232	        CPY SAVY            ; have we reached the end of the needle?
 .826a	d0 f3		bne $825f	        BNE HLP3            ; if not, keep comparing bytes
 .826c	20 c9 86	jsr $86c9	        JSR SHOWAD          ; match found, show address
-.826f	20 e1 ff	jsr $ffe1	HNOFT   JSR STOP            ; no match, check for stop key
-.8272	f0 08		beq $827c	        BEQ HEXIT           ; exit prematurely if pressed
+.826f	ea		nop		HNOFT   NOP
+.8270	ea		nop		        NOP
+.8271	ea		nop		        NOP
+.8272	ea		nop		        NOP
+.8273	ea		nop		        NOP
 .8274	20 76 87	jsr $8776	        JSR ADDA2           ; increment haystack pointer
 .8277	20 64 87	jsr $8764	        JSR SUB13           ; decrement haystack length
 .827a	b0 e1		bcs $825d	        BCS HSCAN           ; still more haystack? keep searching
