@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.56.2625 listing file
 ; 64tass -L 8000 -i -o supermon64-8000.prg "-DORG=\$8000" supermon64.asm
-; Fri Jun 24 04:03:57 2022
+; Fri Jun 24 09:07:30 2022
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -13,7 +13,7 @@
 
 =$c1					TMP0    = $C1               ; used to return input, often holds end address
 =$c3					TMP2    = $C3               ; usually holds start address
-=$f1					SATUS   = $F1               ; kernal i/o status word
+=$90					SATUS   = $90               ; kernal i/o status word
 =$b7					FNLEN   = $B7               ; length of current filename
 =$b9					SADD    = $B9               ; current secondary address (official name SA)
 =$ba					FA      = $BA               ; current device number
@@ -359,7 +359,7 @@
 .8285	84 b9		sty $b9		        STY SADD            ; default to secondary address #1
 .8287	88		dey		        DEY
 .8288	84 b7		sty $b7		        STY FNLEN           ; start with an empty filename
-.828a	84 f1		sty $f1		        STY SATUS           ; clear status
+.828a	84 90		sty $90		        STY SATUS           ; clear status
 .828c	a9 01		lda #$01	        LDA #>STAGE         ; set filename pointer to staging buffer
 .828e	85 bc		sta $bc		        STA FNADR+1
 .8290	a9 17		lda #$17	        LDA #<STAGE
@@ -412,7 +412,7 @@
 .82fb	d0 ba		bne $82b7	        BNE LERROR          ; error due to not enough params for save
 .82fd	a9 00		lda #$00	        LDA #0              ; 0 in A signals load, anything else is verify
 .82ff	20 d5 ff	jsr $ffd5	LOADIT  JSR LOAD            ; call kernal load routine
-.8302	a5 f1		lda $f1		        LDA SATUS           ; get i/o status
+.8302	a5 90		lda $90		        LDA SATUS           ; get i/o status
 .8304	29 10		and #$10	        AND #$10            ; check bit 5 for checksum error
 .8306	f0 e7		beq $82ef	        BEQ LSVXIT          ; if no error go back to mainloop
 .8308	ad 32 02	lda $0232	        LDA SAVY            ; ?? not sure what these two lines are for...
@@ -626,7 +626,8 @@
 .84e9	ea		nop		        NOP
 .84ea	ea		nop		        NOP
 .84eb	ea		nop		        NOP
-.84ec	f0 14		beq $8502	        BEQ DISEXIT         ; exit early if pressed
+.84ec	ea		nop		        NOP
+.84ed	ea		nop		        NOP
 .84ee	20 08 85	jsr $8508	        JSR DSOUT1          ; output disassembly prefix ". "
 .84f1	ee 01 01	inc $0101	        INC LENGTH
 .84f4	ad 01 01	lda $0101	        LDA LENGTH          ; add length of last instruction to start address
@@ -1078,7 +1079,7 @@
 .8885	b0 54		bcs $88db	        BCS IOERR
 .8887	86 c1		stx $c1		        STX TMP0
 .8889	a9 00		lda #$00	        LDA #0              ; clear status
-.888b	85 f1		sta $f1		        STA SATUS
+.888b	85 90		sta $90		        STA SATUS
 .888d	85 b7		sta $b7		        STA FNLEN           ; empty filename
 .888f	20 1e 87	jsr $871e	        JSR GETCHR          ; get next character
 .8892	f0 24		beq $88b8	        BEQ INSTAT1         ; null, display status
@@ -1105,7 +1106,7 @@
 .88c8	20 a0 1e	jsr $1ea0	        JSR CHROUT          ; print it
 .88cb	c9 0d		cmp #$0d	        CMP #$0D            ; if the byte is CR, exit loop
 .88cd	f0 06		beq $88d5	        BEQ DEXIT
-.88cf	a5 f1		lda $f1		        LDA SATUS           ; check status
+.88cf	a5 90		lda $90		        LDA SATUS           ; check status
 .88d1	29 bf		and #$bf	        AND #$BF            ; ignore EOI bit
 .88d3	f0 f0		beq $88c5	        BEQ RDSTAT          ; if no errors, read next byte
 .88d5	20 ab ff	jsr $ffab	DEXIT   JSR UNTLK           ; command device to stop talking
@@ -1132,11 +1133,11 @@
 .8909	8c 2f 02	sty $022f	DIRLIN  STY STORE           ;   ignore the first 2; 3rd is file size
 .890c	20 a5 ff	jsr $ffa5	DLINK   JSR ACPTR           ; read low byte from device
 .890f	85 c1		sta $c1		        STA TMP0            ; store it
-.8911	a5 f1		lda $f1		        LDA SATUS           ; check status
+.8911	a5 90		lda $90		        LDA SATUS           ; check status
 .8913	d0 44		bne $8959	        BNE DREXIT          ; exit if error or eof occurred
 .8915	20 a5 ff	jsr $ffa5	        JSR ACPTR           ; read high byte from device
 .8918	85 c2		sta $c2		        STA TMP0+1          ; store it
-.891a	a5 f1		lda $f1		        LDA SATUS           ; check status
+.891a	a5 90		lda $90		        LDA SATUS           ; check status
 .891c	d0 3b		bne $8959	        BNE DREXIT          ; exit if error or eof cocurred
 .891e	ce 2f 02	dec $022f	        DEC STORE           ; decrement byte count
 .8921	d0 e9		bne $890c	        BNE DLINK           ; loop if bytes remain
@@ -1149,7 +1150,7 @@
 .8931	20 a0 1e	jsr $1ea0	        JSR CHROUT
 .8934	20 a5 ff	jsr $ffa5	DNAME   JSR ACPTR           ; get a filename character from the device
 .8937	f0 0a		beq $8943	        BEQ DMORE           ; if it's null, break out of loop
-.8939	a6 f1		ldx $f1		        LDX SATUS           ; check for errors or eof
+.8939	a6 90		ldx $90		        LDX SATUS           ; check for errors or eof
 .893b	d0 1c		bne $8959	        BNE DREXIT          ; if found exit early
 .893d	20 a0 1e	jsr $1ea0	        JSR CHROUT          ; output character
 .8940	18		clc		        CLC

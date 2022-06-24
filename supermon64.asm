@@ -25,7 +25,7 @@ TMP2    = $C3               ; usually holds start address
 
 ; -----------------------------------------------------------------------------
 ; kernal variables
-SATUS   = $F1               ; kernal i/o status word
+SATUS   = $90               ; kernal i/o status word
 FNLEN   = $B7               ; length of current filename
 SADD    = $B9               ; current secondary address (official name SA)
 FA      = $BA               ; current device number
@@ -744,7 +744,9 @@ DISGO   JSR CLINE           ; clear the current line
         NOP
         NOP
         ;JSR STOP            ; check for stop key
-        BEQ DISEXIT         ; exit early if pressed
+        NOP
+        NOP
+        ;BEQ DISEXIT         ; exit early if pressed
         JSR DSOUT1          ; output disassembly prefix ". "
         INC LENGTH
         LDA LENGTH          ; add length of last instruction to start address
