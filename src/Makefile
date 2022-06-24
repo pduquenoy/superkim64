@@ -4,7 +4,7 @@ supermon64.prg: relocate.prg supermon64-8000.prg supermon64-C000.prg
 	./build.py $^ $@
 
 supermon64-8000.prg: supermon64.asm
-	64tass -L 8000 -i $< -o $@ -DORG='$$8000'
+	64tass -i $< -o $@ -DORG='$$8000'
 
 supermon64-C000.prg: supermon64.asm
 	64tass -i $< -o $@ -DORG='$$C000'
@@ -17,5 +17,6 @@ clean:
 	rm -f supermon64-8000.prg
 	rm -f supermon64-C000.prg
 	rm -f supermon64.prg
-	rm -f 8000
 	rm -f relocate.lst
+	rm -f hex
+

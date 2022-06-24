@@ -1,4 +1,7 @@
-zero_page = '''; Origin: 0000; Install 0848; Run 9558
+zero_page = '''; 1. Navigate to KIM-1 emulator: https://maksimkorzh.github.io/KIM-1/
+; 2. Assemble this file with origin $0000 and upload it
+; 3. [AD] 0848 [GO] - this will create the final binary exacutable;
+; 4. Open TTY mode, type 9548 [G]
 
 dcb $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 dcb $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -141,6 +144,6 @@ with open('hex') as f:
         if line[-1] == ',': line = line[:-1]
         zero_page += line + '\n'
 
-with open('superkim64.dcb', 'w') as f: f.write(zero_page)
+with open('supermon64+KIM_1_install.dcb', 'w') as f: f.write(zero_page)
 
 

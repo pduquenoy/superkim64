@@ -1,13 +1,14 @@
-# Supermon+64 V1.2
-By Jim Butterfield et. al.
+# Supermon+64 V1.2 port to KIM-1
+Original code by Jim Butterfield et. al.<br>
+Modern source and build by J.B. Lang https://github.com/jblang/supermon64<br>
+KIM-1 adoption by Code Monkey King<br>
 
+# About
 Supermon64 is a machine-language monitor for the Commodore 64.  In modern parlance, it would be
 called a debugger, providing functions including inspecting and altering registers and memory locations;
 searching, comparing, and transferring blocks of memory; and assembling and disassembling machine code.
 
-Here is a 10-minute video I made demonstrating many of its features: https://www.youtube.com/watch?v=MEjnMt_3wkU
-
-## Contents
+## Contents (by J.B. Lang)
 
 Original artifacts:
 - [sprmon64.txt](sprmon64.txt) is a posting to comp.binaries.cbm
@@ -28,7 +29,7 @@ Modernized sources:
 - [Makefile](Makefile) is a GNU makefile that will build the final supermon64.prg binary
   using the above sources.
 
-## Background
+## Background (by J.B. Lang)
 
 Supermon is closely associated with [Jim Butterfield](https://en.wikipedia.org/wiki/Jim_Butterfield)
 but it had many contributors over the years.  The original version of Supermon for the Commodore PET
