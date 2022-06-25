@@ -8,6 +8,9 @@ Supermon64 is a machine-language monitor for the Commodore 64.  In modern parlan
 called a debugger, providing functions including inspecting and altering registers and memory locations;
 searching, comparing, and transferring blocks of memory; and assembling and disassembling machine code.
 
+# Installation & Usage
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/tVILcOgy93Q/0.jpg)](https://youtu.be/tVILcOgy93Q)
+
 ## Contents (by J.B. Lang)
 
 Original artifacts:
