@@ -144,6 +144,6 @@ with open('hex') as f:
         if line[-1] == ',': line = line[:-1]
         zero_page += line + '\n'
 
-with open('supermon64+KIM_1_install.dcb', 'w') as f: f.write(zero_page)
+with open('supermon64+KIM-1_install.dcb', 'w') as f: f.write(zero_page)
 
 

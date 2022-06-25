@@ -64,10 +64,10 @@ ENDIN   =*                  ; end of input buffer
 PCH     .FILL 1             ; program counter high byte
 PCL     .FILL 1             ; program counter low byte
 SR      .FILL 1             ; status register
-ACC     .FILL 1             ; accumulator
-XR      .FILL 1             ; X register
-YR      .FILL 1             ; Y register
 SP      .FILL 1             ; stack pointer
+ACC     .FILL 1             ; accumulator
+YR      .FILL 1             ; Y register
+XR      .FILL 1             ; X register
 
 STORE   .FILL 2             ; 2-byte temp storage
 CHRPNT  .FILL 1             ; current position in input buffer
@@ -132,14 +132,14 @@ SUPER   LDY #MSG4-MSGBAS    ; display "..SYS "
 
 ; -----------------------------------------------------------------------------
 ; BRK handler
-BREAK   LDX #$05            ; pull registers off the stack
-BSTACK  LDA $FE,X
+BREAK   LDX #$07            ; pull registers off the stack
+BSTACK  LDA $EF,X
         STA PCH,X
         DEX
         BPL BSTACK
         CLD
         TSX
-        STX SP
+        STX SP               ; just a placeholder for SP is initialized in the above loop anyway
         CLI
         ;PLA                 ; order: Y,X,A,SR,PCL,PCH
         ;STA PCH,X           ; store in memory
@@ -1433,7 +1433,7 @@ SNDMSG  LDA MSGBAS,Y        ; Y contains offset in msg table
 ; message table; last character has high bit set
 MSGBAS  =*
 MSG2    .BYTE $0D               ; header for registers
-        .TEXT "   PC  SR AC XR YR SP   V1.2"
+        .TEXT "   PC  SR SP AR YR XR   V1.2"
         .BYTE $0D+$80
 MSG3    .BYTE $1D,$3F+$80       ; syntax error: move right, display "?"
 MSG4    .TEXT "..SYS"           ; SYS call to enter monitor
